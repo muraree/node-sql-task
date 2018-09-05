@@ -1,0 +1,1 @@
+const Lock = require('../model/lock');
