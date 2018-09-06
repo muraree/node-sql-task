@@ -4,7 +4,7 @@ let sequelize;
 
 async function initializeDb () {
   try{
-    sequelize = new Sequelize('kw0mac4p5hrm2x9j', 'jlrdbclouioqvfom', 'jlrdbclouioqvfom', {
+    sequelize = new Sequelize('kw0mac4p5hrm2x9j', 'jlrdbclouioqvfom', 'kfp9322w4cdid6is', {
       host: 'lyl3nln24eqcxxot.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
       dialect: 'mysql',
       port: 3306,
