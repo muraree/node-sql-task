@@ -29,18 +29,31 @@ Functionality inside:
 
 Getting Started
 
-*Assuming that Node is already installed on your PC.
+For setup on local you have to change the databse connection credentials in the db.js file yourself with db host name, port, username, password and database name.
+ 
+* For running testcases your have to configure db in your local device.
 
-To get the project running on your PC you have to first do:
-git clone https://github.com/muraree/node-sql-task.git on the 
-terminal.
+For production :
 
-After that get into the project directory and then you have to do 
-"npm install".
+* I have deployed app on heroku here is url :
+https://node-sql-task.herokuapp.com
 
-Then "npm start" to start the project.
+I have tested it with postman.
 
 Note- Only server side implementation is done so you will not see any
 graphical window on browser.
+
+API Urls:
+- Register user: POST: /api/user/register , params: {username, firstName,    lastName, password, birthDate}
+- Login user: POST: /api/user/login , params: {username, password}
+- Update users: PUT: /api/users/:id, headers: { 'x-access-token': token } params: {id}
+- Delete users: DELETE: /api/users/:id, headers: { 'x-access-token': token } params: {id}
+- Get user: GET: /api/users/me, headers: { 'x-access-token': token }
+- Get users: GET: /api/users, headers: { 'x-access-token': token } query: {username}
+- Get users by id: GET: /api/users/:userid, headers: { 'x-access-token': token }
+- Create Locks: POST: /api/locks/create, headers: { 'x-access-token': token }params:{name, userid(refernce to user model with id)}
+- Update Locks: PUT: /api/locks/:lockid, headers: { 'x-access-token': token } params: {lockid}
+- Delete Locks: DELETE: /api/locks/:lockid, headers: { 'x-access-token': token } params: {lockid}
+- Get Locks: GET: /api/locks, headers: { 'x-access-token': token } query:{id or macid}
 
 "Any feedbacks for improvement are appreciated."
