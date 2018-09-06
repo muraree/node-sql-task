@@ -56,8 +56,8 @@ const deleteLock = async (req, res, next) => {
   }
 }
 
-const getLock = async (req, res, next) => {
-  
+const getLocks = async (req, res, next) => {
+
   try{
     let lock;
     if(req.query.id){
@@ -76,4 +76,4 @@ const getLock = async (req, res, next) => {
   }
 }
 
-module.exports = { create, update, deleteLock, getLock };
+module.exports = { create, update, deleteLock, getLocks };

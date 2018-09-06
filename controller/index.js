@@ -12,22 +12,22 @@ router.post('/user/register', userController.register);
 
 router.post('/user/login', userController.login);
 
-router.put('/user/:id', verifyToken, userController.update);
+router.put('/users/:id', verifyToken, userController.update);
 
-router.delete('/user/:id', verifyToken, userController.deleteUser);
+router.delete('/users/:id', verifyToken, userController.deleteUser);
 
-router.get('/user/me', verifyToken, userController.getUser);
+router.get('/users/me', verifyToken, userController.getUser);
 
-router.get('/user', verifyToken, userController.getAllUser);
+router.get('/users', verifyToken, userController.getAllUser);
 
-router.get('/user/:userid', verifyToken, userController.getUserById);
+router.get('/users/:userid', verifyToken, userController.getUserById);
 
-router.post('/lock/create', verifyToken, lockController.create);
+router.post('/locks/create', verifyToken, lockController.create);
 
-router.put('/lock/:lockid', verifyToken, lockController.update);
+router.put('/locks/:lockid', verifyToken, lockController.update);
 
-router.delete('/lock/:lockid', verifyToken, lockController.deleteLock);
+router.delete('/locks/:lockid', verifyToken, lockController.deleteLock);
 
-router.get('/lock', verifyToken, lockController.getLock);
+router.get('/locks', verifyToken, lockController.getLocks);
 
 module.exports = router;
