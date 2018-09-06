@@ -14,7 +14,7 @@ const register = async (req, res) => {
       password: hashedPass,
       birthDate: req.body.birthDate,
     })
-    const token = jwt.sign({id: user._id}, config.secret, {expiresIn: 86400});
+    const token = jwt.sign({id: user.id}, config.secret, {expiresIn: 86400});
     res.send({ auth: true, token });
   }
   catch(err){
@@ -32,13 +32,12 @@ const login = async (req, res) => {
         res.send({auth: false, message: "no user was found."});
         return
       }
-      console.log(user);
       const passwordIsValid = bcrypt.compareSync(req.body.password,user.password);
       if(!passwordIsValid){ 
         res.send({auth: false, message: "Username or password incorrect"});
         return
       }
-      const token = jwt.sign({ id: user._id }, config.secret, {expiresIn: 86400});
+      const token = jwt.sign({ id: user.id }, config.secret, {expiresIn: 86400});
       res.send({auth: true, token , user});
     }
     else{
@@ -50,27 +49,55 @@ const login = async (req, res) => {
   }
 }
 
-const update = async () => {
+const update = async (req, res, next) => {
   try{
-    if(!req.userId) res.send({auth: false, message: "token verified but id not found."});
+    if(!req.params.id) res.send({auth: false, message: "Please provide id for update."});
 
-    const user = await User.findById({ _id: req.userId }, { password: 0 });
-    if(!user) res.send({auth: false, message: "No user found with this id"});
-    if(user.role === "admin"){
-      await User.findByIdAndUpdate({_id:req.params.id},{$set:{
-        name:req.body.name,
-        email:req.body.email,
-        password:req.body.password
-      }});
-      res.send({success:true});
-    }
-    else{
-      res.send({auth:false,success:false});
-    }
+    await User.update({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      birthDate: req.body.birthDate,
+    },
+      {
+        where: { id: req.userId }
+      });
+
+    res.send({ auth: true, message: "user updated"});
   }
   catch(err){
     console.log(err);
   }
 }
 
-module.exports = { register, login };
+const deleteUser = async (req, res, next) => {
+  try{
+    if(!req.params.id) res.send({auth: false, message: "Please provide id for update."});
+
+    await User.destroy(
+      {
+        where: { id: req.userId }
+      });
+
+    res.send({ auth: true, message: "user deleted"});
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+const getUser = async (req, res, next) => {
+  try{
+
+    const user = await User.find(
+      {
+        where: { id: req.userId }
+      });
+
+    res.send({ auth: true, user });
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+module.exports = { register, login, update, deleteUser, getUser };
