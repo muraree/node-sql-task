@@ -6,7 +6,12 @@ const User = require('../model/user');
 const Op = Sequelize.Op;
 
 const register = async (req, res) => {
+
+  if(!req.body.username) return res.send({ auth:false, message:"username is required."}); 
+  if(!req.body.password) return res.send({ auth:false, message:"password is required."}); 
+
   const hashedPass = bcrypt.hashSync(req.body.password,8);
+  
   try{
     await User.sync();
     const user = await User.create({
@@ -25,8 +30,10 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
+
   try{
     if((req.body.username) && (req.body.password)){
+
       const user = await User.find({
         where: { username: req.body.username }
       });
@@ -52,6 +59,7 @@ const login = async (req, res) => {
 }
 
 const update = async (req, res, next) => {
+
   try{
     if(!req.params.id) res.send({auth: false, message: "Please provide id for update."});
 
@@ -72,6 +80,7 @@ const update = async (req, res, next) => {
 }
 
 const deleteUser = async (req, res, next) => {
+
   try{
     if(!req.params.id) res.send({auth: false, message: "Please provide id for update."});
 
@@ -88,8 +97,8 @@ const deleteUser = async (req, res, next) => {
 }
 
 const getUser = async (req, res, next) => {
-  try{
 
+  try{
     const user = await User.find(
       {
         where: { id: req.userId }
@@ -103,17 +112,28 @@ const getUser = async (req, res, next) => {
 }
 
 const getAllUser = async (req, res, next) => {
+
   try{
-    const users = await User.findAll({
-      attributes: ['id', 'username', 'firstName', 'lastName', 'createdAt', 'updatedAt']
-    },
-      {
+    let users;
+    if(req.query.username){
+      users = await User.find({
         where: {  
-            id:{
-              [Op.ne]: req.userId
-            } 
+            username: req.query.username
           }
       });
+    }
+    else{
+      users = await User.findAll({
+        attributes: ['id', 'username', 'firstName', 'lastName', 'createdAt', 'updatedAt']
+      },
+        {
+        where:{  
+          id:{
+            [Op.ne]: req.userId
+          } 
+        }
+      });
+    }
 
     res.send({ auth: true, users });
   }
@@ -122,4 +142,20 @@ const getAllUser = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, update, deleteUser, getUser, getAllUser };
+const getUserById = async (req, res, next) => {
+
+  try{
+    const user = await User.find({
+      where: {  
+          id: parseInt(req.params.userid)
+        }
+    });
+
+    res.send({ auth: true, user });
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+module.exports = { register, login, update, deleteUser, getUser, getAllUser, getUserById };

@@ -3,6 +3,6 @@ const app = express();
 const db = require('./db');
 
 const controller = require('./controller');
-app.use('/api/user', controller);
+app.use('/api', controller);
 
 module.exports = app;
