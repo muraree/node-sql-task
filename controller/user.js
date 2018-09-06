@@ -1,7 +1,9 @@
+const Sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config');
 const User = require('../model/user');
+const Op = Sequelize.Op;
 
 const register = async (req, res) => {
   const hashedPass = bcrypt.hashSync(req.body.password,8);
@@ -100,4 +102,24 @@ const getUser = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, update, deleteUser, getUser };
+const getAllUser = async (req, res, next) => {
+  try{
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'firstName', 'lastName', 'createdAt', 'updatedAt']
+    },
+      {
+        where: {  
+            id:{
+              [Op.ne]: req.userId
+            } 
+          }
+      });
+
+    res.send({ auth: true, users });
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+module.exports = { register, login, update, deleteUser, getUser, getAllUser };
