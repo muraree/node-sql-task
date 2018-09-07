@@ -61,10 +61,16 @@ const getLocks = async (req, res, next) => {
   try{
     let lock;
     if(req.query.id){
-      lock = await Lock.find({ where: { id: parseInt(req.query.id) }});
+      lock = await Lock.find({ where: { 
+        id: parseInt(req.query.id),
+        user: parseInt(req.userId),
+      }});
     }
     else if(req.query.macid){
-      lock = await Lock.find({ where: { macid: req.query.macid }});
+      lock = await Lock.find({ where: { 
+        macid: req.query.macid,
+        user: parseInt(req.userId), 
+      }});
     }
     else{
       lock = await Lock.findAll({ where: { user: parseInt(req.userId) }});
