@@ -24,10 +24,12 @@ router.get('/users/:userid', verifyToken, userController.getUserById);
 
 router.post('/locks/create', verifyToken, lockController.create);
 
-router.put('/locks/:lockid', verifyToken, lockController.update);
+router.patch('/locks/:lockid', verifyToken, lockController.update);
 
 router.delete('/locks/:lockid', verifyToken, lockController.deleteLock);
 
 router.get('/locks', verifyToken, lockController.getLocks);
+
+router.get('/locks/:lockid', verifyToken, lockController.getLockById);
 
 module.exports = router;
