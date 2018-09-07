@@ -4,7 +4,6 @@ const Lock = require('../model/lock');
 const create = async (req, res, next) => {
 
   if(!req.body.name) return res.send({ auth: true, message: "name is required." });
-  if(!req.userId) return res.send({ auth: true, message: "user id is required." });
 
   try{
     await Lock.sync();
