@@ -4,15 +4,10 @@ let sequelize;
 
 async function initializeDb () {
   try{
-    sequelize = new Sequelize('lattis', 'root', 'root', {
-      host: 'localhost',
+    sequelize = new Sequelize('kw0mac4p5hrm2x9j', 'jlrdbclouioqvfom', 'kfp9322w4cdid6is', {
+      host: 'lyl3nln24eqcxxot.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
       dialect: 'mysql',
-
-      pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-      },
+      port: 3306,
     });
     await sequelize.authenticate();
   }
